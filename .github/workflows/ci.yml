@@ -1,0 +1,57 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  validate-template:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Pixi
+        uses: prefix-dev/setup-pixi@v0
+        with:
+          cache: true
+
+      - name: Check formatting
+        run: pixi run format-check
+
+      - name: Run lint
+        run: pixi run lint
+
+      - name: Run mypy
+        run: pixi run mypy
+
+      - name: Run tests
+        run: pixi run test
+
+  validate-generated-project:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Pixi
+        uses: prefix-dev/setup-pixi@v0
+        with:
+          cache: true
+
+      - name: Generate project from template
+        run: |
+          python3 scripts/bootstrap_project.py template-smoke "$RUNNER_TEMP/template-smoke" \
+            --no-git-init \
+            --author-name "CI" \
+            --author-email "ci@example.com"
+
+      - name: Validate generated project
+        working-directory: ${{ runner.temp }}/template-smoke
+        run: |
+          pixi run format-check
+          pixi run lint
+          pixi run mypy
+          pixi run test

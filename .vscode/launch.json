@@ -1,0 +1,10 @@
+{
+  "configurations": [
+    {
+      "name": "Python Debugger",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "python_starter_project.main"
+    }
+  ]
+}
