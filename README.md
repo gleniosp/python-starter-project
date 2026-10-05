@@ -6,7 +6,8 @@ This repository can act as a base for new Python projects.
 
 1. Create a project from this template: make a local copy with the bootstrap script, or
    create a GitHub repository from the template and bootstrap it in place.
-2. In the new project, install the development environment with `pixi install --environment dev`.
+2. In the new project, run `pixi run --environment dev setup-dev` to prepare the
+   development environment and install its Git hook.
 3. Develop and run checks in `dev`; use `default` as the production runtime environment.
 
 The two ways to create a project are described below.
@@ -82,8 +83,8 @@ The project supports Python 3.14.x and selects the regular CPython build. `pixi.
 records exact resolved versions, including the Python patch release.
 
 The `default` environment contains Python, the project, and runtime dependencies; use it
-for production. The `dev` environment adds Ruff, mypy, and pytest for local development
-and checks.
+for production. The `dev` environment adds Ruff, mypy, pytest, and prek for local
+development and checks.
 
 Use Pixi to manage both Conda and PyPI packages. Conda often provides ready-to-use native
 or GPU builds for scientific libraries such as PyTorch; add their channels in
@@ -103,13 +104,23 @@ pixi add --feature test --pypi pytest-cov # PyPI, test environment
 `pixi add` updates `pyproject.toml` and `pixi.lock`. See the [Pixi dependency
 commands](https://pixi.sh/latest/reference/cli/pixi/add/) for more options.
 
+Hook definitions live in [`prek.toml`](prek.toml). The `setup-dev` task prepares the
+development environment and installs the Git hook, which runs the configured hooks on
+staged files at commit time. To run them on all tracked files:
+
+```bash
+pixi run --environment dev hooks
+```
+
+The hooks cover file hygiene and Ruff formatting/linting. Mypy and tests remain separate
+commands and CI checks, so commits do not run the full test suite.
+
 Set up and run the local development environment with:
 
 ```bash
-pixi install --environment dev
+pixi run --environment dev setup-dev
 pixi run --environment dev main
-pixi run --environment dev format-check
-pixi run --environment dev lint
+pixi run --environment dev hooks
 pixi run --environment dev mypy
 pixi run --environment dev test
 ```

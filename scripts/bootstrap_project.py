@@ -140,7 +140,7 @@ def get_git_config_value(source_root: Path, key: str) -> str | None:
             cwd=source_root,
             text=True,
         )
-    except (FileNotFoundError, subprocess.CalledProcessError):
+    except FileNotFoundError, subprocess.CalledProcessError:
         return None
 
     return normalize_optional_value(completed.stdout)

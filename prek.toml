@@ -1,0 +1,29 @@
+[[repos]]
+repo = "builtin"
+hooks = [
+    { id = "check-added-large-files", args = ["--enforce-all"] },
+    { id = "check-merge-conflict" },
+    { id = "check-toml" },
+    { id = "check-yaml" },
+    { id = "end-of-file-fixer" },
+    { id = "trailing-whitespace" },
+]
+
+[[repos]]
+repo = "local"
+
+[[repos.hooks]]
+id = "ruff-check"
+name = "Ruff check"
+entry = "pixi run --environment dev ruff check --force-exclude --fix --exit-non-zero-on-fix"
+language = "system"
+types = ["python"]
+require_serial = true
+
+[[repos.hooks]]
+id = "ruff-format"
+name = "Ruff format"
+entry = "pixi run --environment dev ruff format --force-exclude --exit-non-zero-on-format"
+language = "system"
+types = ["python"]
+require_serial = true

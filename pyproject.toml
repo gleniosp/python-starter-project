@@ -30,12 +30,15 @@ main = "python -m python_starter_project.main"
 [tool.pixi.feature.lint.dependencies]
 ruff = "==0.16.10"
 mypy = "==2.4.0"
+prek = "==0.5.5"
 
 [tool.pixi.feature.lint.tasks]
 lint = "ruff check ."
 format = "ruff format ."
 format-check = "ruff format --check ."
 mypy = "mypy src scripts tests"
+setup-dev = "prek install"
+hooks = "prek run --all-files"
 
 [tool.pixi.feature.test.dependencies]
 pytest = "==9.1.1"
