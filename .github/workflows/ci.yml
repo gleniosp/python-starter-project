@@ -60,7 +60,8 @@ jobs:
 
       - name: Generate project from template
         run: |
-          python3 scripts/bootstrap_project.py template-smoke "$RUNNER_TEMP/template-smoke" \
+          pixi run --environment dev python scripts/bootstrap_project.py \
+            template-smoke "$RUNNER_TEMP/template-smoke" \
             --author-name "CI" \
             --author-email "ci@example.com"
 
