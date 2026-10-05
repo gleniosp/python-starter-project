@@ -77,10 +77,22 @@ the script can rewrite them:
 
 Keeping these names consistent makes the bootstrap rewrite predictable.
 
-## Pixi environments and dependencies
+## Pixi platforms, environments, and dependencies
 
 The project supports Python 3.14.x and selects the regular CPython build. `pixi.lock`
-records exact resolved versions, including the Python patch release.
+records exact resolved versions, including the Python patch release. Supported platforms
+are Linux x86-64 (`linux-64`), macOS Intel (`osx-64`), macOS Apple silicon (`osx-arm64`),
+and Windows x86-64 (`win-64`). CI runs the development hooks, type checks, and tests on a
+native runner for each platform.
+Remove platforms you don't plan to support from `[tool.pixi.workspace].platforms` and the
+CI matrix.
+
+Pixi resolves dependencies for every platform in `[tool.pixi.workspace].platforms` and
+records those resolutions in `pixi.lock`. Locally, `pixi install` installs the `default`
+environment for the host platform; use `--environment dev` to select `dev`. The
+`pixi install --all` command installs every environment for the host platform, not every
+platform. The `--platform` option can select another target, but Pixi warns when that
+target differs from the host.
 
 The `default` environment contains Python, the project, and runtime dependencies; use it
 for production. The `dev` environment adds Ruff, mypy, pytest, and prek for local
