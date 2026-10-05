@@ -10,6 +10,12 @@ This repository can act as a base for new Python projects.
    development environment and install its Git hook.
 3. Develop and run checks in `dev`; use `default` as the production runtime environment.
 
+If you use a coding agent that supports project skills, these can help:
+
+- [`bootstrap-project`](.agents/skills/bootstrap-project/SKILL.md) guides project creation.
+- [`pixi-dependency-management`](.agents/skills/pixi-dependency-management/SKILL.md) helps add or update
+  dependencies.
+
 The two ways to create a project are described below.
 
 ## Generate a local project
