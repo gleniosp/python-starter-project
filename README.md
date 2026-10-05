@@ -7,7 +7,7 @@ This repository can act as a base project for new Python projects.
 From the root of this repository, run:
 
 ```bash
-pixi run python scripts/bootstrap_project.py my-new-project ../my-new-project
+pixi run --environment dev python scripts/bootstrap_project.py my-new-project ../my-new-project
 ```
 
 The script will:
@@ -27,7 +27,7 @@ By default, the author name and email are taken from your git config when availa
 You can override them explicitly:
 
 ```bash
-pixi run python scripts/bootstrap_project.py my-new-project ../my-new-project \
+pixi run --environment dev python scripts/bootstrap_project.py my-new-project ../my-new-project \
 	--author-name "Jane Doe" \
 	--author-email "jane@example.com"
 ```
@@ -35,7 +35,7 @@ pixi run python scripts/bootstrap_project.py my-new-project ../my-new-project \
 If you want to override the package name, pass `--package-name`:
 
 ```bash
-pixi run python scripts/bootstrap_project.py 3d-demo ../3d-demo --package-name three_d_demo
+pixi run --environment dev python scripts/bootstrap_project.py 3d-demo ../3d-demo --package-name three_d_demo
 ```
 
 If you do not want a new git repository to be created, pass `--no-git-init`.
@@ -53,7 +53,7 @@ To use the repository as a GitHub template:
 4. Run the bootstrap script in place:
 
 ```bash
-pixi run python scripts/bootstrap_project.py my-new-project --in-place \
+pixi run --environment dev python scripts/bootstrap_project.py my-new-project --in-place \
 	--author-name "Jane Doe" \
 	--author-email "jane@example.com"
 ```
@@ -61,13 +61,40 @@ pixi run python scripts/bootstrap_project.py my-new-project --in-place \
 The in-place mode renames the package, rewrites metadata, and removes generated state
 such as `pixi.lock` and `.pixi` so the new repository can regenerate its own environment.
 
+## Pixi environments
+
+The project supports Python 3.14.x. Pixi selects the regular CPython build, and the exact
+resolved versions, including the Python patch release, are recorded in `pixi.lock`.
+
+The `default` environment contains Python, the project, and its runtime dependencies. Use
+it as the production runtime environment. The `dev` environment includes `default` plus
+Ruff, mypy, and pytest. Use it for local development and checks.
+
+Set up and run the local development environment with:
+
+```bash
+pixi install --environment dev
+pixi run --environment dev main
+pixi run --environment dev format-check
+pixi run --environment dev lint
+pixi run --environment dev mypy
+pixi run --environment dev test
+```
+
+Set up and run the production runtime environment with:
+
+```bash
+pixi install --environment default
+pixi run --environment default main
+```
+
 ## Suggested workflow
 
 1. Keep this repository as your template/base project.
 2. For a local copy, run the bootstrap script with a destination path.
 3. For a GitHub template repo, clone the new repo and run the bootstrap script with `--in-place`.
-4. Run `pixi install`.
-5. Start working in the new project.
+4. Set up the development environment with `pixi install --environment dev`.
+5. Run the app with `pixi run --environment dev main` and use the same environment for tests and linting.
 
 ## What to rename in the generated project
 

@@ -340,8 +340,8 @@ def print_summary(
     print("Next steps:")
     if not result.in_place:
         print(f"  cd {result.destination_root}")
-    print("  pixi install")
-    print("  pixi run main")
+    print("  pixi install --environment dev")
+    print("  pixi run --environment dev main")
     if result.git_initialized:
         print("  git add .")
         print('  git commit -m "Initial commit"')
